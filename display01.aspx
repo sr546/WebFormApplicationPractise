@@ -5,6 +5,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+
+    <script type="text/javascript">
+$(document).ready(function(){
+    $("select.country").change(function(){
+        var selectedCountry = $(".country option:selected").val();
+        $.ajax({
+            type: "POST",
+            url: "../php/process-request.php",
+            data: { country : selectedCountry } 
+        }).done(function(data){
+            $("#response").html(data);
+        });
+    });
+});
+</script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -62,6 +77,32 @@
                 <asp:BoundField DataField="country" HeaderText="country" SortExpression="country" />
             </Fields>
         </asp:DetailsView>
+        <asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack="True" DataSourceID="SqlDataSource1" DataTextField="country" DataValueField="country">
+        </asp:DropDownList>
+         <br />
+        <br />
+
+        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+
+        </asp:UpdatePanel>
+
+         <table>
+        <tr>
+            <td>
+                <label>Country:</label>
+                <select class="country">
+                    <option>Select</option>
+                    <option value="usa">United States</option>
+                    <option value="india">India</option>
+                    <option value="uk">United Kingdom</option>
+                </select>
+            </td>
+            <td id="response">
+                <!--Response will be inserted here-->
+            </td>
+        </tr>
+    </table>
+
     </form>
 </body>
 </html>
